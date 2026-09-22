@@ -1,0 +1,3281 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ConectaComercial - WhatsApp Comercial</title>
+
+<style>
+:root{
+  --primary:#6c4cff;
+  --primary-dark:#5638d8;
+  --primary-light:#eeeaff;
+  --bg:#f6f7fb;
+  --card:#ffffff;
+  --text:#202124;
+  --muted:#747780;
+  --border:#e7e7ed;
+  --success:#22a06b;
+  --warning:#e5a100;
+  --danger:#dc4c64;
+  --info:#3182ce;
+  --shadow:0 4px 18px rgba(35,31,56,.07);
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Inter,Arial,sans-serif;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+}
+
+button,input,textarea,select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+.app{
+  display:flex;
+  min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+  width:245px;
+  background:#fff;
+  border-right:1px solid var(--border);
+  position:fixed;
+  left:0;
+  top:0;
+  bottom:0;
+  z-index:20;
+}
+
+.logo{
+  height:76px;
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:0 22px;
+  border-bottom:1px solid var(--border);
+}
+
+.logo-icon{
+  width:38px;
+  height:38px;
+  border-radius:11px;
+  background:var(--primary);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:19px;
+  font-weight:bold;
+}
+
+.logo strong{
+  font-size:17px;
+}
+
+.logo small{
+  display:block;
+  color:var(--muted);
+  font-size:10px;
+  margin-top:2px;
+}
+
+.menu{
+  padding:18px 12px;
+}
+
+.menu-title{
+  color:#aaa;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  padding:10px 12px;
+  font-weight:bold;
+}
+
+.menu button{
+  width:100%;
+  border:0;
+  background:transparent;
+  padding:12px;
+  border-radius:9px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  color:#555;
+  text-align:left;
+  margin-bottom:3px;
+}
+
+.menu button:hover,
+.menu button.active{
+  background:var(--primary-light);
+  color:var(--primary);
+  font-weight:bold;
+}
+
+.menu-icon{
+  width:22px;
+  text-align:center;
+}
+
+.sidebar-footer{
+  position:absolute;
+  bottom:18px;
+  left:15px;
+  right:15px;
+  background:#f7f6ff;
+  padding:12px;
+  border-radius:10px;
+  font-size:11px;
+  color:#777;
+}
+
+/* MAIN */
+
+.main{
+  margin-left:245px;
+  width:calc(100% - 245px);
+  min-height:100vh;
+}
+
+.topbar{
+  height:76px;
+  background:#fff;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 30px;
+}
+
+.page-title h1{
+  font-size:21px;
+}
+
+.page-title p{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:3px;
+}
+
+.top-actions{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.search{
+  position:relative;
+}
+
+.search input{
+  width:250px;
+  border:1px solid var(--border);
+  padding:10px 14px 10px 36px;
+  border-radius:9px;
+  outline:none;
+  background:#fafafa;
+}
+
+.search span{
+  position:absolute;
+  left:13px;
+  top:9px;
+  color:#999;
+}
+
+.user{
+  width:37px;
+  height:37px;
+  border-radius:50%;
+  background:var(--primary-light);
+  color:var(--primary);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+}
+
+/* CONTENT */
+
+.content{
+  padding:28px;
+  max-width:1500px;
+  margin:auto;
+}
+
+.page{
+  display:none;
+}
+
+.page.active{
+  display:block;
+}
+
+/* BUTTONS */
+
+.btn{
+  border:0;
+  padding:10px 16px;
+  border-radius:8px;
+  font-weight:600;
+  font-size:13px;
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+}
+
+.btn-primary{
+  background:var(--primary);
+  color:#fff;
+}
+
+.btn-primary:hover{
+  background:var(--primary-dark);
+}
+
+.btn-light{
+  background:#f1f1f6;
+  color:#555;
+}
+
+.btn-danger{
+  background:#fff0f2;
+  color:var(--danger);
+}
+
+.btn-success{
+  background:#e9f8f1;
+  color:var(--success);
+}
+
+.btn-small{
+  padding:7px 10px;
+  font-size:11px;
+}
+
+/* DASHBOARD */
+
+.page-heading{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:22px;
+}
+
+.page-heading h2{
+  font-size:19px;
+}
+
+.page-heading p{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+  margin-bottom:22px;
+}
+
+.stat-card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:13px;
+  padding:18px;
+  box-shadow:var(--shadow);
+}
+
+.stat-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.stat-icon{
+  width:38px;
+  height:38px;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--primary-light);
+  color:var(--primary);
+}
+
+.stat-number{
+  font-size:25px;
+  font-weight:bold;
+  margin-top:12px;
+}
+
+.stat-label{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:3px;
+}
+
+.dashboard-grid{
+  display:grid;
+  grid-template-columns:1.5fr 1fr;
+  gap:18px;
+}
+
+.card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:13px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+
+.card-header{
+  padding:17px 18px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.card-header h3{
+  font-size:14px;
+}
+
+.card-body{
+  padding:18px;
+}
+
+/* TABLE */
+
+.table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+.table th{
+  text-align:left;
+  color:#999;
+  font-size:10px;
+  text-transform:uppercase;
+  padding:12px 15px;
+  background:#fafafa;
+}
+
+.table td{
+  padding:14px 15px;
+  border-top:1px solid var(--border);
+  font-size:12px;
+}
+
+.table tr:hover td{
+  background:#fcfcff;
+}
+
+/* BADGES */
+
+.badge{
+  display:inline-block;
+  padding:5px 8px;
+  border-radius:20px;
+  font-size:10px;
+  font-weight:bold;
+}
+
+.badge-purple{
+  background:#eeeaff;
+  color:#6747dd;
+}
+
+.badge-green{
+  background:#e8f7f0;
+  color:#21885e;
+}
+
+.badge-yellow{
+  background:#fff6dd;
+  color:#a67300;
+}
+
+.badge-red{
+  background:#ffedf0;
+  color:#c93d55;
+}
+
+.badge-blue{
+  background:#e9f3ff;
+  color:#2672b8;
+}
+
+/* CLIENTES */
+
+.toolbar{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:18px;
+}
+
+.toolbar-left,
+.toolbar-right{
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+
+.input{
+  border:1px solid var(--border);
+  padding:10px 12px;
+  border-radius:8px;
+  outline:none;
+  background:#fff;
+}
+
+.input:focus,
+textarea:focus,
+select:focus{
+  border-color:var(--primary);
+}
+
+/* CUSTOMER CARD */
+
+.customer-list{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+}
+
+.customer-card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:17px;
+  box-shadow:var(--shadow);
+}
+
+.customer-head{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:14px;
+}
+
+.avatar{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  background:var(--primary-light);
+  color:var(--primary);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+}
+
+.customer-name{
+  font-size:14px;
+  font-weight:bold;
+}
+
+.customer-phone{
+  color:#999;
+  font-size:11px;
+  margin-top:3px;
+}
+
+.customer-info{
+  border-top:1px solid var(--border);
+  padding-top:12px;
+}
+
+.customer-info p{
+  font-size:11px;
+  margin-bottom:8px;
+  color:#666;
+}
+
+.customer-actions{
+  display:flex;
+  gap:7px;
+  margin-top:14px;
+}
+
+/* WHATSAPP */
+
+.chat-layout{
+  display:grid;
+  grid-template-columns:300px 1fr;
+  height:calc(100vh - 130px);
+  min-height:560px;
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:13px;
+  overflow:hidden;
+  box-shadow:var(--shadow);
+}
+
+.chat-list{
+  border-right:1px solid var(--border);
+  overflow:auto;
+}
+
+.chat-search{
+  padding:13px;
+  border-bottom:1px solid var(--border);
+}
+
+.chat-search input{
+  width:100%;
+}
+
+.chat-contact{
+  padding:14px;
+  border-bottom:1px solid var(--border);
+  cursor:pointer;
+}
+
+.chat-contact:hover,
+.chat-contact.selected{
+  background:#f4f2ff;
+}
+
+.chat-contact-head{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+.chat-contact-name{
+  font-weight:bold;
+  font-size:12px;
+}
+
+.chat-preview{
+  color:#888;
+  font-size:10px;
+  margin-top:3px;
+}
+
+.chat-area{
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+}
+
+.chat-top{
+  padding:14px 18px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.chat-user{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.chat-messages{
+  flex:1;
+  padding:22px;
+  background:#f6f5f2;
+  overflow:auto;
+}
+
+.message{
+  max-width:65%;
+  padding:10px 12px;
+  border-radius:9px;
+  margin-bottom:10px;
+  font-size:12px;
+  line-height:1.45;
+}
+
+.message.in{
+  background:#fff;
+}
+
+.message.out{
+  background:#e8ddff;
+  margin-left:auto;
+}
+
+.message-time{
+  display:block;
+  text-align:right;
+  color:#aaa;
+  font-size:9px;
+  margin-top:5px;
+}
+
+.chat-input{
+  padding:12px;
+  border-top:1px solid var(--border);
+  display:flex;
+  gap:8px;
+}
+
+.chat-input input{
+  flex:1;
+}
+
+/* FOLLOW UP */
+
+.follow-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+
+.follow-column{
+  background:#f9f9fc;
+  border-radius:12px;
+  padding:12px;
+  min-height:400px;
+}
+
+.follow-title{
+  display:flex;
+  justify-content:space-between;
+  padding:8px 5px 12px;
+  font-weight:bold;
+  font-size:12px;
+}
+
+.follow-item{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:13px;
+  margin-bottom:10px;
+  box-shadow:0 2px 8px rgba(0,0,0,.03);
+}
+
+.follow-item strong{
+  font-size:12px;
+}
+
+.follow-item p{
+  color:#777;
+  font-size:10px;
+  margin:7px 0;
+}
+
+.follow-date{
+  font-size:10px;
+  color:#999;
+}
+
+/* KANBAN */
+
+.kanban{
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:10px;
+  overflow-x:auto;
+}
+
+.kanban-column{
+  min-width:180px;
+  background:#f4f4f8;
+  padding:10px;
+  border-radius:10px;
+  min-height:400px;
+}
+
+.kanban-column h4{
+  font-size:11px;
+  margin-bottom:10px;
+}
+
+.kanban-card{
+  background:#fff;
+  padding:11px;
+  border-radius:8px;
+  margin-bottom:8px;
+  border:1px solid var(--border);
+  cursor:grab;
+}
+
+.kanban-card strong{
+  font-size:11px;
+}
+
+.kanban-card p{
+  color:#888;
+  font-size:9px;
+  margin-top:5px;
+}
+
+/* FORMS */
+
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+}
+
+.form-group{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.form-group.full{
+  grid-column:1/-1;
+}
+
+.form-group label{
+  font-size:11px;
+  font-weight:bold;
+  color:#555;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:10px;
+  outline:none;
+  resize:vertical;
+}
+
+.form-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  margin-top:18px;
+}
+
+/* QUICK REPLIES */
+
+.quick-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+}
+
+.quick-card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:16px;
+}
+
+.quick-code{
+  color:var(--primary);
+  font-size:11px;
+  font-weight:bold;
+}
+
+.quick-card h3{
+  font-size:13px;
+  margin:8px 0;
+}
+
+.quick-card p{
+  font-size:11px;
+  color:#777;
+  line-height:1.5;
+}
+
+/* CATALOG */
+
+.product-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px;
+}
+
+.product{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow:hidden;
+}
+
+.product-img{
+  height:120px;
+  background:#eeeaff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:30px;
+}
+
+.product-info{
+  padding:13px;
+}
+
+.product-info h3{
+  font-size:13px;
+}
+
+.product-info p{
+  color:#888;
+  font-size:10px;
+  margin:5px 0;
+}
+
+.price{
+  font-weight:bold;
+  color:var(--primary);
+}
+
+/* CAMPAIGNS */
+
+.campaign-list{
+  display:grid;
+  gap:12px;
+}
+
+.campaign{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.campaign h3{
+  font-size:13px;
+}
+
+.campaign p{
+  font-size:10px;
+  color:#888;
+  margin-top:4px;
+}
+
+/* EMPTY */
+
+.empty{
+  padding:40px;
+  text-align:center;
+  color:#999;
+  font-size:12px;
+}
+
+/* MODAL */
+
+.modal-bg{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:100;
+  padding:20px;
+}
+
+.modal-bg.show{
+  display:flex;
+}
+
+.modal{
+  background:#fff;
+  width:600px;
+  max-width:100%;
+  max-height:90vh;
+  overflow:auto;
+  border-radius:14px;
+  padding:22px;
+}
+
+.modal-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.modal-header h2{
+  font-size:17px;
+}
+
+.close{
+  border:0;
+  background:#f1f1f1;
+  width:30px;
+  height:30px;
+  border-radius:50%;
+}
+
+/* TOAST */
+
+.toast{
+  position:fixed;
+  right:25px;
+  bottom:25px;
+  background:#222;
+  color:#fff;
+  padding:12px 17px;
+  border-radius:9px;
+  font-size:12px;
+  display:none;
+  z-index:200;
+}
+
+.toast.show{
+  display:block;
+}
+
+/* MOBILE */
+
+.mobile-menu{
+  display:none;
+}
+
+@media(max-width:1100px){
+  .cards{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .customer-list{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .product-grid{
+    grid-template-columns:repeat(3,1fr);
+  }
+
+  .quick-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media(max-width:800px){
+  .sidebar{
+    display:none;
+  }
+
+  .main{
+    margin-left:0;
+    width:100%;
+  }
+
+  .mobile-menu{
+    display:block;
+    border:0;
+    background:transparent;
+    font-size:20px;
+  }
+
+  .topbar{
+    padding:0 15px;
+  }
+
+  .search{
+    display:none;
+  }
+
+  .content{
+    padding:16px;
+  }
+
+  .dashboard-grid,
+  .follow-grid{
+    grid-template-columns:1fr;
+  }
+
+  .customer-list{
+    grid-template-columns:1fr;
+  }
+
+  .product-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .chat-layout{
+    grid-template-columns:1fr;
+  }
+
+  .chat-list{
+    display:none;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:520px){
+  .cards{
+    grid-template-columns:1fr;
+  }
+
+  .quick-grid,
+  .product-grid{
+    grid-template-columns:1fr;
+  }
+
+  .page-heading,
+  .toolbar{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .top-actions .btn{
+    display:none;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+
+  <div class="logo">
+    <div class="logo-icon">C</div>
+    <div>
+      <strong>ConectaComercial</strong>
+      <small>WhatsApp Comercial</small>
+    </div>
+  </div>
+
+  <nav class="menu">
+
+    <div class="menu-title">Principal</div>
+
+    <button class="active" onclick="showPage('dashboard',this)">
+      <span class="menu-icon">⌂</span> Dashboard
+    </button>
+
+    <button onclick="showPage('clientes',this)">
+      <span class="menu-icon">👥</span> Clientes
+    </button>
+
+    <button onclick="showPage('whatsapp',this)">
+      <span class="menu-icon">💬</span> WhatsApp
+    </button>
+
+    <button onclick="showPage('followup',this)">
+      <span class="menu-icon">🔔</span> Follow-up
+    </button>
+
+    <button onclick="showPage('funil',this)">
+      <span class="menu-icon">▦</span> Funil
+    </button>
+
+    <div class="menu-title">Ferramentas</div>
+
+    <button onclick="showPage('respostas',this)">
+      <span class="menu-icon">⚡</span> Respostas rápidas
+    </button>
+
+    <button onclick="showPage('catalogo',this)">
+      <span class="menu-icon">📦</span> Catálogo
+    </button>
+
+    <button onclick="showPage('campanhas',this)">
+      <span class="menu-icon">📣</span> Campanhas
+    </button>
+
+    <div class="menu-title">Sistema</div>
+
+    <button onclick="showPage('configuracoes',this)">
+      <span class="menu-icon">⚙</span> Configurações
+    </button>
+
+  </nav>
+
+  <div class="sidebar-footer">
+    <strong>WhatsApp Comercial</strong><br>
+    Organize. Acompanhe. Relacione-se.
+  </div>
+
+</aside>
+
+
+<!-- MAIN -->
+<main class="main">
+
+<header class="topbar">
+
+  <div class="page-title">
+    <h1 id="topTitle">Dashboard</h1>
+    <p>Estruture seu atendimento comercial</p>
+  </div>
+
+  <div class="top-actions">
+
+    <div class="search">
+      <span>⌕</span>
+      <input
+        id="globalSearch"
+        placeholder="Buscar cliente..."
+        oninput="globalSearch()"
+      >
+    </div>
+
+    <button class="btn btn-primary" onclick="openCustomerModal()">
+      + Novo cliente
+    </button>
+
+    <div class="user">LC</div>
+
+  </div>
+
+</header>
+
+
+<div class="content">
+
+
+<!-- DASHBOARD -->
+
+<section id="dashboard" class="page active">
+
+  <div class="page-heading">
+    <div>
+      <h2>Visão geral</h2>
+      <p>Acompanhe a operação comercial da empresa.</p>
+    </div>
+
+    <button class="btn btn-light" onclick="renderAll()">
+      ↻ Atualizar
+    </button>
+  </div>
+
+  <div class="cards">
+
+    <div class="stat-card">
+      <div class="stat-top">
+        <span class="stat-icon">👥</span>
+        <span class="badge badge-purple">Clientes</span>
+      </div>
+      <div class="stat-number" id="statClientes">0</div>
+      <div class="stat-label">clientes cadastrados</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-top">
+        <span class="stat-icon">💬</span>
+        <span class="badge badge-blue">Leads</span>
+      </div>
+      <div class="stat-number" id="statLeads">0</div>
+      <div class="stat-label">contatos em atendimento</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-top">
+        <span class="stat-icon">🔔</span>
+        <span class="badge badge-yellow">Follow-up</span>
+      </div>
+      <div class="stat-number" id="statFollow">0</div>
+      <div class="stat-label">acompanhamentos pendentes</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-top">
+        <span class="stat-icon">✓</span>
+        <span class="badge badge-green">Clientes</span>
+      </div>
+      <div class="stat-number" id="statClientesAtivos">0</div>
+      <div class="stat-label">clientes ativos</div>
+    </div>
+
+  </div>
+
+
+  <div class="dashboard-grid">
+
+    <div class="card">
+
+      <div class="card-header">
+        <h3>Clientes recentes</h3>
+        <button class="btn btn-light btn-small" onclick="showPageByName('clientes')">
+          Ver todos
+        </button>
+      </div>
+
+      <div id="recentCustomers"></div>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="card-header">
+        <h3>Follow-ups próximos</h3>
+        <button class="btn btn-light btn-small" onclick="showPageByName('followup')">
+          Ver agenda
+        </button>
+      </div>
+
+      <div id="dashboardFollow"></div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- CLIENTES -->
+
+<section id="clientes" class="page">
+
+  <div class="page-heading">
+    <div>
+      <h2>Clientes</h2>
+      <p>Organize os contatos e acompanhe o relacionamento.</p>
+    </div>
+
+    <button class="btn btn-primary" onclick="openCustomerModal()">
+      + Novo cliente
+    </button>
+  </div>
+
+
+  <div class="toolbar">
+
+    <div class="toolbar-left">
+      <input
+        class="input"
+        id="customerSearch"
+        placeholder="Buscar cliente..."
+        oninput="renderCustomers()"
+      >
+
+      <select class="input" id="customerFilter" onchange="renderCustomers()">
+        <option value="">Todos</option>
+        <option value="Novo contato">Novo contato</option>
+        <option value="Em atendimento">Em atendimento</option>
+        <option value="Interessado">Interessado</option>
+        <option value="Orçamento">Orçamento</option>
+        <option value="Aguardando retorno">Aguardando retorno</option>
+        <option value="Cliente">Cliente</option>
+        <option value="Pós-venda">Pós-venda</option>
+      </select>
+    </div>
+
+  </div>
+
+
+  <div id="customerList" class="customer-list"></div>
+
+</section>
+
+
+<!-- WHATSAPP -->
+
+<section id="whatsapp" class="page">
+
+  <div class="page-heading">
+    <div>
+      <h2>WhatsApp Comercial</h2>
+      <p>Organize seus atendimentos e acompanhe cada cliente.</p>
+    </div>
+
+    <button class="btn btn-success" onclick="openCurrentWhatsApp()">
+      ☎ Abrir WhatsApp
+    </button>
+  </div>
+
+
+  <div class="chat-layout">
+
+    <div class="chat-list">
+
+      <div class="chat-search">
+        <input
+          class="input"
+          placeholder="Pesquisar conversa..."
+          oninput="filterChats(this.value)"
+        >
+      </div>
+
+      <div id="chatContacts"></div>
+
+    </div>
+
+
+    <div class="chat-area">
+
+      <div class="chat-top">
+
+        <div class="chat-user">
+
+          <div class="avatar" id="chatAvatar">JS</div>
+
+          <div>
+            <strong id="chatName">João Silva</strong>
+            <div style="font-size:10px;color:#999" id="chatPhone">
+              (85) 99999-9999
+            </div>
+          </div>
+
+        </div>
+
+        <button class="btn btn-light btn-small" onclick="scheduleFollowup()">
+          🔔 Agendar follow-up
+        </button>
+
+      </div>
+
+
+      <div class="chat-messages" id="chatMessages"></div>
+
+
+      <div class="chat-input">
+
+        <button class="btn btn-light" onclick="showQuickReplies()">
+          ⚡
+        </button>
+
+        <input
+          id="chatInput"
+          placeholder="Digite uma mensagem..."
+          onkeydown="if(event.key==='Enter')sendChatMessage()"
+        >
+
+        <button class="btn btn-primary" onclick="sendChatMessage()">
+          Enviar
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- FOLLOW UP -->
+
+<section id="followup" class="page">
+
+  <div class="page-heading">
+
+    <div>
+      <h2>Follow-up</h2>
+      <p>Não deixe clientes interessados sem acompanhamento.</p>
+    </div>
+
+    <button class="btn btn-primary" onclick="scheduleFollowup()">
+      + Agendar acompanhamento
+    </button>
+
+  </div>
+
+
+  <div class="follow-grid">
+
+    <div class="follow-column">
+
+      <div class="follow-title">
+        <span>🔴 Atrasados</span>
+        <span id="countLate">0</span>
+      </div>
+
+      <div id="lateFollowups"></div>
+
+    </div>
+
+
+    <div class="follow-column">
+
+      <div class="follow-title">
+        <span>🟡 Hoje</span>
+        <span id="countToday">0</span>
+      </div>
+
+      <div id="todayFollowups"></div>
+
+    </div>
+
+
+    <div class="follow-column">
+
+      <div class="follow-title">
+        <span>🟢 Próximos</span>
+        <span id="countNext">0</span>
+      </div>
+
+      <div id="nextFollowups"></div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- FUNIL -->
+
+<section id="funil" class="page">
+
+  <div class="page-heading">
+
+    <div>
+      <h2>Funil de atendimento</h2>
+      <p>Acompanhe o estágio de cada contato.</p>
+    </div>
+
+    <button class="btn btn-light" onclick="renderKanban()">
+      ↻ Atualizar
+    </button>
+
+  </div>
+
+
+  <div class="kanban" id="kanban"></div>
+
+</section>
+
+
+<!-- RESPOSTAS -->
+
+<section id="respostas" class="page">
+
+  <div class="page-heading">
+
+    <div>
+      <h2>Respostas rápidas</h2>
+      <p>Padronize respostas para ganhar tempo no atendimento.</p>
+    </div>
+
+    <button class="btn btn-primary" onclick="addQuickReply()">
+      + Nova resposta
+    </button>
+
+  </div>
+
+
+  <div id="quickGrid" class="quick-grid"></div>
+
+</section>
+
+
+<!-- CATÁLOGO -->
+
+<section id="catalogo" class="page">
+
+  <div class="page-heading">
+
+    <div>
+      <h2>Catálogo</h2>
+      <p>Organize produtos e serviços para facilitar o atendimento.</p>
+    </div>
+
+    <button class="btn btn-primary" onclick="addProduct()">
+      + Novo produto
+    </button>
+
+  </div>
+
+
+  <div id="productGrid" class="product-grid"></div>
+
+</section>
+
+
+<!-- CAMPANHAS -->
+
+<section id="campanhas" class="page">
+
+  <div class="page-heading">
+
+    <div>
+      <h2>Campanhas</h2>
+      <p>Organize mensagens para relacionamento e reativação.</p>
+    </div>
+
+    <button class="btn btn-primary" onclick="addCampaign()">
+      + Nova campanha
+    </button>
+
+  </div>
+
+
+  <div class="campaign-list" id="campaignList"></div>
+
+</section>
+
+
+<!-- CONFIGURAÇÕES -->
+
+<section id="configuracoes" class="page">
+
+  <div class="page-heading">
+
+    <div>
+      <h2>Configurações</h2>
+      <p>Configure as informações comerciais.</p>
+    </div>
+
+  </div>
+
+
+  <div class="card">
+
+    <div class="card-header">
+      <h3>Dados da empresa</h3>
+    </div>
+
+    <div class="card-body">
+
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label>Nome da empresa</label>
+          <input id="companyName" class="input" value="Minha Empresa">
+        </div>
+
+        <div class="form-group">
+          <label>WhatsApp comercial</label>
+          <input id="companyPhone" class="input" value="5585999999999">
+        </div>
+
+        <div class="form-group">
+          <label>Categoria</label>
+          <input id="companyCategory" class="input" value="Comércio">
+        </div>
+
+        <div class="form-group">
+          <label>Horário de atendimento</label>
+          <input id="companyHours" class="input" value="Segunda a sexta, 08h às 18h">
+        </div>
+
+        <div class="form-group full">
+          <label>Mensagem de apresentação</label>
+          <textarea id="companyGreeting" rows="4">Olá! Seja bem-vindo(a). Como podemos ajudar?</textarea>
+        </div>
+
+      </div>
+
+      <div class="form-actions">
+        <button class="btn btn-primary" onclick="saveSettings()">
+          Salvar configurações
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+</div>
+</main>
+</div>
+
+
+<!-- MODAL CLIENTE -->
+
+<div class="modal-bg" id="customerModal">
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <h2 id="modalTitle">Novo cliente</h2>
+
+      <button class="close" onclick="closeModal()">
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="form-grid">
+
+      <div class="form-group">
+        <label>Nome *</label>
+        <input id="customerName" class="input" placeholder="Nome do cliente">
+      </div>
+
+      <div class="form-group">
+        <label>Telefone *</label>
+        <input id="customerPhone" class="input" placeholder="(85) 99999-9999">
+      </div>
+
+      <div class="form-group">
+        <label>Empresa</label>
+        <input id="customerCompany" class="input" placeholder="Nome da empresa">
+      </div>
+
+      <div class="form-group">
+        <label>Status</label>
+
+        <select id="customerStatus" class="input">
+          <option>Novo contato</option>
+          <option>Em atendimento</option>
+          <option>Interessado</option>
+          <option>Orçamento</option>
+          <option>Aguardando retorno</option>
+          <option>Cliente</option>
+          <option>Pós-venda</option>
+        </select>
+
+      </div>
+
+      <div class="form-group">
+        <label>Próximo follow-up</label>
+        <input id="customerFollowup" class="input" type="date">
+      </div>
+
+      <div class="form-group">
+        <label>Valor potencial</label>
+        <input id="customerValue" class="input" type="number" placeholder="0">
+      </div>
+
+      <div class="form-group full">
+        <label>Observações</label>
+        <textarea
+          id="customerNotes"
+          rows="4"
+          placeholder="Informações importantes sobre o cliente..."
+        ></textarea>
+      </div>
+
+    </div>
+
+
+    <div class="form-actions">
+
+      <button class="btn btn-light" onclick="closeModal()">
+        Cancelar
+      </button>
+
+      <button class="btn btn-primary" onclick="saveCustomer()">
+        Salvar cliente
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- TOAST -->
+
+<div class="toast" id="toast"></div>
+
+
+<script>
+
+/* =========================
+   BANCO LOCAL
+========================= */
+
+const defaultCustomers = [
+  {
+    id:1,
+    name:"João Silva",
+    phone:"5585999999999",
+    company:"",
+    status:"Interessado",
+    followup: getDateOffset(1),
+    value:850,
+    notes:"Interessado no modelo X.",
+    messages:[
+      {type:"in",text:"Olá, gostaria de saber o preço.",time:"09:30"},
+      {type:"out",text:"Olá, João! Claro. Qual produto você gostaria de consultar?",time:"09:32"},
+      {type:"in",text:"Gostaria do modelo X.",time:"09:34"}
+    ]
+  },
+  {
+    id:2,
+    name:"Maria Souza",
+    phone:"5585988888888",
+    company:"",
+    status:"Orçamento",
+    followup:getDateOffset(0),
+    value:1200,
+    notes:"Aguardando retorno sobre orçamento."
+  },
+  {
+    id:3,
+    name:"Empresa ABC",
+    phone:"5585977777777",
+    company:"Empresa ABC",
+    status:"Em atendimento",
+    followup:getDateOffset(-1),
+    value:3500,
+    notes:"Solicitou contato com vendedor."
+  },
+  {
+    id:4,
+    name:"Carlos Oliveira",
+    phone:"5585966666666",
+    company:"",
+    status:"Cliente",
+    followup:getDateOffset(4),
+    value:500,
+    notes:"Cliente recorrente."
+  },
+  {
+    id:5,
+    name:"Ana Paula",
+    phone:"5585955555555",
+    company:"",
+    status:"Novo contato",
+    followup:getDateOffset(2),
+    value:300,
+    notes:"Primeiro contato."
+  }
+];
+
+
+let customers = JSON.parse(
+  localStorage.getItem("cc_customers")
+) || defaultCustomers;
+
+let quickReplies = JSON.parse(
+  localStorage.getItem("cc_quickReplies")
+) || [
+  {
+    id:1,
+    code:"/ola",
+    title:"Saudação",
+    text:"Olá! Seja bem-vindo(a). Como podemos ajudar?"
+  },
+  {
+    id:2,
+    code:"/orcamento",
+    title:"Orçamento",
+    text:"Claro! Para preparar seu orçamento, poderia me informar qual produto ou serviço você procura?"
+  },
+  {
+    id:3,
+    code:"/retorno",
+    title:"Acompanhamento",
+    text:"Olá! Passando para saber se conseguiu analisar nossa proposta. Ficamos à disposição."
+  },
+  {
+    id:4,
+    code:"/pos",
+    title:"Pós-venda",
+    text:"Olá! Gostaríamos de saber se ficou satisfeito(a) com seu atendimento. Podemos ajudar em algo?"
+  }
+];
+
+
+let products = JSON.parse(
+  localStorage.getItem("cc_products")
+) || [
+  {
+    id:1,
+    name:"Produto A",
+    description:"Produto principal da empresa",
+    price:129.90,
+    icon:"📦"
+  },
+  {
+    id:2,
+    name:"Produto B",
+    description:"Produto de maior procura",
+    price:249.90,
+    icon:"🛍️"
+  },
+  {
+    id:3,
+    name:"Serviço Premium",
+    description:"Serviço completo",
+    price:499.90,
+    icon:"⭐"
+  }
+];
+
+
+let campaigns = JSON.parse(
+  localStorage.getItem("cc_campaigns")
+) || [
+  {
+    id:1,
+    name:"Reativação de clientes",
+    description:"Mensagem para clientes que não compram há algum tempo.",
+    status:"Rascunho"
+  },
+  {
+    id:2,
+    name:"Oferta da semana",
+    description:"Divulgação de condição especial.",
+    status:"Pronta"
+  }
+];
+
+
+let currentCustomerId = customers[0]?.id || null;
+let editingCustomerId = null;
+
+
+/* =========================
+   UTILIDADES
+========================= */
+
+function saveData(){
+
+  localStorage.setItem(
+    "cc_customers",
+    JSON.stringify(customers)
+  );
+
+  localStorage.setItem(
+    "cc_quickReplies",
+    JSON.stringify(quickReplies)
+  );
+
+  localStorage.setItem(
+    "cc_products",
+    JSON.stringify(products)
+  );
+
+  localStorage.setItem(
+    "cc_campaigns",
+    JSON.stringify(campaigns)
+  );
+}
+
+
+function getDateOffset(days){
+
+  const d = new Date();
+
+  d.setDate(d.getDate()+days);
+
+  return d.toISOString().split("T")[0];
+}
+
+
+function formatDate(date){
+
+  if(!date) return "Não definido";
+
+  const parts = date.split("-");
+
+  return `${parts[2]}/${parts[1]}/${parts[0]}`;
+}
+
+
+function initials(name){
+
+  return name
+    .split(" ")
+    .slice(0,2)
+    .map(x=>x[0])
+    .join("")
+    .toUpperCase();
+}
+
+
+function money(value){
+
+  return Number(value || 0).toLocaleString(
+    "pt-BR",
+    {
+      style:"currency",
+      currency:"BRL"
+    }
+  );
+}
+
+
+function showToast(message){
+
+  const toast = document.getElementById("toast");
+
+  toast.innerText = message;
+
+  toast.classList.add("show");
+
+  setTimeout(()=>{
+    toast.classList.remove("show");
+  },2500);
+}
+
+
+/* =========================
+   NAVEGAÇÃO
+========================= */
+
+const titles = {
+  dashboard:"Dashboard",
+  clientes:"Clientes",
+  whatsapp:"WhatsApp Comercial",
+  followup:"Follow-up",
+  funil:"Funil de atendimento",
+  respostas:"Respostas rápidas",
+  catalogo:"Catálogo",
+  campanhas:"Campanhas",
+  configuracoes:"Configurações"
+};
+
+
+function showPage(page,button){
+
+  document.querySelectorAll(".page")
+    .forEach(p=>p.classList.remove("active"));
+
+  document.getElementById(page)
+    .classList.add("active");
+
+  document.querySelectorAll(".menu button")
+    .forEach(b=>b.classList.remove("active"));
+
+  if(button){
+    button.classList.add("active");
+  }
+
+  document.getElementById("topTitle").innerText =
+    titles[page];
+
+  if(page==="dashboard") renderDashboard();
+  if(page==="clientes") renderCustomers();
+  if(page==="whatsapp") renderChat();
+  if(page==="followup") renderFollowups();
+  if(page==="funil") renderKanban();
+  if(page==="respostas") renderQuickReplies();
+  if(page==="catalogo") renderProducts();
+  if(page==="campanhas") renderCampaigns();
+}
+
+
+function showPageByName(page){
+
+  const button = [...document.querySelectorAll(".menu button")]
+    .find(b=>b.getAttribute("onclick")?.includes(`'${page}'`));
+
+  showPage(page,button);
+}
+
+
+/* =========================
+   DASHBOARD
+========================= */
+
+function renderDashboard(){
+
+  document.getElementById("statClientes").innerText =
+    customers.length;
+
+  document.getElementById("statLeads").innerText =
+    customers.filter(c=>[
+      "Novo contato",
+      "Em atendimento",
+      "Interessado",
+      "Orçamento",
+      "Aguardando retorno"
+    ].includes(c.status)).length;
+
+  document.getElementById("statFollow").innerText =
+    customers.filter(c=>c.followup).length;
+
+  document.getElementById("statClientesAtivos").innerText =
+    customers.filter(c=>[
+      "Cliente",
+      "Pós-venda"
+    ].includes(c.status)).length;
+
+
+  const recent = [...customers]
+    .slice(-5)
+    .reverse();
+
+
+  document.getElementById("recentCustomers").innerHTML =
+    recent.length ?
+
+    `<table class="table">
+      <thead>
+        <tr>
+          <th>Cliente</th>
+          <th>Status</th>
+          <th>Follow-up</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${recent.map(c=>`
+          <tr>
+            <td>
+              <strong>${escapeHTML(c.name)}</strong><br>
+              <small>${escapeHTML(c.phone)}</small>
+            </td>
+            <td>${statusBadge(c.status)}</td>
+            <td>${formatDate(c.followup)}</td>
+          </tr>
+        `).join("")}
+      </tbody>
+    </table>` :
+
+    `<div class="empty">Nenhum cliente cadastrado.</div>`;
+
+
+  const follows = customers
+    .filter(c=>c.followup)
+    .sort((a,b)=>a.followup.localeCompare(b.followup))
+    .slice(0,5);
+
+
+  document.getElementById("dashboardFollow").innerHTML =
+    follows.length ?
+
+    follows.map(c=>`
+
+      <div style="
+        padding:13px 0;
+        border-bottom:1px solid var(--border);
+        display:flex;
+        justify-content:space-between;
+        gap:10px;
+      ">
+
+        <div>
+          <strong style="font-size:12px">
+            ${escapeHTML(c.name)}
+          </strong>
+
+          <p style="font-size:10px;color:#888;margin-top:4px">
+            ${escapeHTML(c.notes || "Acompanhamento comercial")}
+          </p>
+        </div>
+
+        <span class="badge ${followBadge(c.followup)}">
+          ${formatDate(c.followup)}
+        </span>
+
+      </div>
+
+    `).join("") :
+
+    `<div class="empty">Nenhum follow-up agendado.</div>`;
+}
+
+
+function statusBadge(status){
+
+  const map = {
+    "Novo contato":"badge-blue",
+    "Em atendimento":"badge-purple",
+    "Interessado":"badge-yellow",
+    "Orçamento":"badge-yellow",
+    "Aguardando retorno":"badge-red",
+    "Cliente":"badge-green",
+    "Pós-venda":"badge-green"
+  };
+
+  return `<span class="badge ${map[status] || "badge-purple"}">
+    ${status}
+  </span>`;
+}
+
+
+function followBadge(date){
+
+  const today = getDateOffset(0);
+
+  if(date < today) return "badge-red";
+  if(date === today) return "badge-yellow";
+
+  return "badge-green";
+}
+
+
+/* =========================
+   CLIENTES
+========================= */
+
+function renderCustomers(){
+
+  const list = document.getElementById("customerList");
+
+  const search = (
+    document.getElementById("customerSearch")?.value || ""
+  ).toLowerCase();
+
+  const filter =
+    document.getElementById("customerFilter")?.value || "";
+
+
+  const filtered = customers.filter(c=>{
+
+    const matchesSearch =
+      c.name.toLowerCase().includes(search) ||
+      c.phone.includes(search) ||
+      (c.company || "").toLowerCase().includes(search);
+
+    const matchesFilter =
+      !filter || c.status===filter;
+
+    return matchesSearch && matchesFilter;
+  });
+
+
+  if(!filtered.length){
+
+    list.innerHTML =
+      `<div class="empty" style="grid-column:1/-1">
+        Nenhum cliente encontrado.
+      </div>`;
+
+    return;
+  }
+
+
+  list.innerHTML = filtered.map(c=>`
+
+    <div class="customer-card">
+
+      <div class="customer-head">
+
+        <div class="avatar">
+          ${initials(c.name)}
+        </div>
+
+        <div>
+          <div class="customer-name">
+            ${escapeHTML(c.name)}
+          </div>
+
+          <div class="customer-phone">
+            ${escapeHTML(c.phone)}
+          </div>
+        </div>
+
+      </div>
+
+
+      <div style="margin-bottom:10px">
+        ${statusBadge(c.status)}
+      </div>
+
+
+      <div class="customer-info">
+
+        <p>
+          <strong>Empresa:</strong>
+          ${escapeHTML(c.company || "Não informado")}
+        </p>
+
+        <p>
+          <strong>Próximo contato:</strong>
+          ${formatDate(c.followup)}
+        </p>
+
+        <p>
+          <strong>Valor potencial:</strong>
+          ${money(c.value)}
+        </p>
+
+        <p>
+          <strong>Observação:</strong>
+          ${escapeHTML(c.notes || "Nenhuma")}
+        </p>
+
+      </div>
+
+
+      <div class="customer-actions">
+
+        <button
+          class="btn btn-primary btn-small"
+          onclick="openChat(${c.id})"
+        >
+          💬 Atendimento
+        </button>
+
+        <button
+          class="btn btn-light btn-small"
+          onclick="editCustomer(${c.id})"
+        >
+          Editar
+        </button>
+
+        <button
+          class="btn btn-danger btn-small"
+          onclick="deleteCustomer(${c.id})"
+        >
+          Excluir
+        </button>
+
+      </div>
+
+    </div>
+
+  `).join("");
+}
+
+
+/* =========================
+   MODAL CLIENTE
+========================= */
+
+function openCustomerModal(id=null){
+
+  editingCustomerId = id;
+
+  document.getElementById("customerModal")
+    .classList.add("show");
+
+
+  if(id){
+
+    const c = customers.find(x=>x.id===id);
+
+    document.getElementById("modalTitle").innerText =
+      "Editar cliente";
+
+    document.getElementById("customerName").value = c.name;
+    document.getElementById("customerPhone").value = c.phone;
+    document.getElementById("customerCompany").value = c.company || "";
+    document.getElementById("customerStatus").value = c.status;
+    document.getElementById("customerFollowup").value = c.followup || "";
+    document.getElementById("customerValue").value = c.value || "";
+    document.getElementById("customerNotes").value = c.notes || "";
+
+  }else{
+
+    document.getElementById("modalTitle").innerText =
+      "Novo cliente";
+
+    [
+      "customerName",
+      "customerPhone",
+      "customerCompany",
+      "customerFollowup",
+      "customerValue",
+      "customerNotes"
+    ].forEach(id=>{
+      document.getElementById(id).value="";
+    });
+
+    document.getElementById("customerStatus").value =
+      "Novo contato";
+  }
+}
+
+
+function closeModal(){
+
+  document.getElementById("customerModal")
+    .classList.remove("show");
+
+  editingCustomerId = null;
+}
+
+
+function saveCustomer(){
+
+  const name =
+    document.getElementById("customerName").value.trim();
+
+  const phone =
+    document.getElementById("customerPhone").value.trim();
+
+  if(!name || !phone){
+
+    showToast("Preencha nome e telefone.");
+
+    return;
+  }
+
+
+  const data = {
+
+    name,
+    phone,
+
+    company:
+      document.getElementById("customerCompany").value.trim(),
+
+    status:
+      document.getElementById("customerStatus").value,
+
+    followup:
+      document.getElementById("customerFollowup").value,
+
+    value:
+      Number(document.getElementById("customerValue").value || 0),
+
+    notes:
+      document.getElementById("customerNotes").value.trim()
+  };
+
+
+  if(editingCustomerId){
+
+    const index =
+      customers.findIndex(c=>c.id===editingCustomerId);
+
+    customers[index] = {
+      ...customers[index],
+      ...data
+    };
+
+    showToast("Cliente atualizado.");
+
+  }else{
+
+    customers.push({
+      id:Date.now(),
+      ...data,
+      messages:[]
+    });
+
+    showToast("Cliente cadastrado.");
+  }
+
+
+  saveData();
+  closeModal();
+  renderAll();
+}
+
+
+function editCustomer(id){
+  openCustomerModal(id);
+}
+
+
+function deleteCustomer(id){
+
+  const c = customers.find(x=>x.id===id);
+
+  if(!confirm(`Excluir ${c.name}?`)) return;
+
+  customers = customers.filter(x=>x.id!==id);
+
+  if(currentCustomerId===id){
+    currentCustomerId = customers[0]?.id || null;
+  }
+
+  saveData();
+  renderAll();
+
+  showToast("Cliente excluído.");
+}
+
+
+/* =========================
+   WHATSAPP
+========================= */
+
+function renderChat(){
+
+  renderChatContacts();
+
+  if(!currentCustomerId && customers.length){
+    currentCustomerId = customers[0].id;
+  }
+
+  renderCurrentChat();
+}
+
+
+function renderChatContacts(){
+
+  const container =
+    document.getElementById("chatContacts");
+
+  container.innerHTML = customers.map(c=>`
+
+    <div
+      class="chat-contact ${c.id===currentCustomerId ? "selected":""}"
+      onclick="openChat(${c.id})"
+    >
+
+      <div class="chat-contact-head">
+
+        <div class="avatar">
+          ${initials(c.name)}
+        </div>
+
+        <div style="min-width:0">
+
+          <div class="chat-contact-name">
+            ${escapeHTML(c.name)}
+          </div>
+
+          <div class="chat-preview">
+            ${escapeHTML(
+              c.messages?.length
+              ? c.messages[c.messages.length-1].text
+              : "Nenhuma mensagem registrada"
+            )}
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  `).join("");
+}
+
+
+function openChat(id){
+
+  currentCustomerId = id;
+
+  showPageByName("whatsapp");
+
+  renderChat();
+
+  renderChatContacts();
+}
+
+
+function renderCurrentChat(){
+
+  const c =
+    customers.find(x=>x.id===currentCustomerId);
+
+  if(!c) return;
+
+
+  document.getElementById("chatAvatar").innerText =
+    initials(c.name);
+
+  document.getElementById("chatName").innerText =
+    c.name;
+
+  document.getElementById("chatPhone").innerText =
+    c.phone;
+
+
+  const box =
+    document.getElementById("chatMessages");
+
+
+  const messages = c.messages || [];
+
+
+  if(!messages.length){
+
+    box.innerHTML =
+      `<div class="empty">
+        Nenhuma mensagem registrada.<br>
+        Inicie o atendimento.
+      </div>`;
+
+    return;
+  }
+
+
+  box.innerHTML = messages.map(m=>`
+
+    <div class="message ${m.type}">
+
+      ${escapeHTML(m.text)}
+
+      <span class="message-time">
+        ${m.time || ""}
+      </span>
+
+    </div>
+
+  `).join("");
+
+
+  box.scrollTop = box.scrollHeight;
+}
+
+
+function sendChatMessage(){
+
+  const input =
+    document.getElementById("chatInput");
+
+  const text = input.value.trim();
+
+  if(!text) return;
+
+
+  const c =
+    customers.find(x=>x.id===currentCustomerId);
+
+  if(!c) return;
+
+
+  if(!c.messages) c.messages=[];
+
+
+  c.messages.push({
+    type:"out",
+    text,
+    time:new Date().toLocaleTimeString(
+      "pt-BR",
+      {hour:"2-digit",minute:"2-digit"}
+    )
+  });
+
+
+  if(c.status==="Novo contato"){
+    c.status="Em atendimento";
+  }
+
+
+  input.value="";
+
+  saveData();
+
+  renderCurrentChat();
+  renderChatContacts();
+  renderDashboard();
+
+  showToast("Mensagem adicionada ao histórico.");
+}
+
+
+function openCurrentWhatsApp(){
+
+  const c =
+    customers.find(x=>x.id===currentCustomerId);
+
+  if(!c){
+    showToast("Selecione um cliente.");
+    return;
+  }
+
+  const phone =
+    c.phone.replace(/\D/g,"");
+
+  window.open(
+    `https://wa.me/${phone}`,
+    "_blank"
+  );
+}
+
+
+function filterChats(value){
+
+  const term = value.toLowerCase();
+
+  document.querySelectorAll(".chat-contact")
+    .forEach(item=>{
+      item.style.display =
+        item.innerText.toLowerCase().includes(term)
+        ? ""
+        : "none";
+    });
+}
+
+
+function showQuickReplies(){
+
+  const options =
+    quickReplies.map(
+      q=>`${q.code} - ${q.title}`
+    ).join("\n");
+
+  const selected =
+    prompt(
+      "Digite o código da resposta rápida:\n\n"+
+      options
+    );
+
+  if(!selected) return;
+
+  const reply =
+    quickReplies.find(q=>
+      q.code.toLowerCase()===selected.toLowerCase()
+    );
+
+  if(!reply){
+
+    showToast("Resposta não encontrada.");
+
+    return;
+  }
+
+  document.getElementById("chatInput").value =
+    reply.text;
+}
+
+
+function scheduleFollowup(){
+
+  if(!currentCustomerId){
+
+    showToast("Selecione um cliente.");
+
+    return;
+  }
+
+  const date =
+    prompt(
+      "Digite a data do próximo follow-up (AAAA-MM-DD):",
+      getDateOffset(1)
+    );
+
+  if(!date) return;
+
+  const c =
+    customers.find(x=>x.id===currentCustomerId);
+
+  c.followup=date;
+
+  if(c.status==="Cliente"){
+    c.status="Pós-venda";
+  }
+
+  saveData();
+  renderAll();
+
+  showToast("Follow-up agendado.");
+}
+
+
+/* =========================
+   FOLLOW-UP
+========================= */
+
+function renderFollowups(){
+
+  const today = getDateOffset(0);
+
+  const late = customers.filter(
+    c=>c.followup && c.followup < today
+  );
+
+  const todayList = customers.filter(
+    c=>c.followup && c.followup === today
+  );
+
+  const next = customers.filter(
+    c=>c.followup && c.followup > today
+  );
+
+
+  document.getElementById("countLate").innerText =
+    late.length;
+
+  document.getElementById("countToday").innerText =
+    todayList.length;
+
+  document.getElementById("countNext").innerText =
+    next.length;
+
+
+  document.getElementById("lateFollowups").innerHTML =
+    followupHTML(late);
+
+  document.getElementById("todayFollowups").innerHTML =
+    followupHTML(todayList);
+
+  document.getElementById("nextFollowups").innerHTML =
+    followupHTML(next);
+}
+
+
+function followupHTML(list){
+
+  if(!list.length){
+    return `<div class="empty">Nenhum acompanhamento.</div>`;
+  }
+
+  return list.map(c=>`
+
+    <div class="follow-item">
+
+      <strong>${escapeHTML(c.name)}</strong>
+
+      <p>
+        ${escapeHTML(c.notes || "Acompanhamento comercial")}
+      </p>
+
+      <div class="follow-date">
+        📅 ${formatDate(c.followup)}
+      </div>
+
+      <div style="display:flex;gap:5px;margin-top:10px">
+
+        <button
+          class="btn btn-success btn-small"
+          onclick="openChat(${c.id})"
+        >
+          💬 Atender
+        </button>
+
+        <button
+          class="btn btn-light btn-small"
+          onclick="completeFollowup(${c.id})"
+        >
+          ✓ Concluir
+        </button>
+
+      </div>
+
+    </div>
+
+  `).join("");
+}
+
+
+function completeFollowup(id){
+
+  const c =
+    customers.find(x=>x.id===id);
+
+  c.followup="";
+
+  saveData();
+  renderAll();
+
+  showToast("Follow-up concluído.");
+}
+
+
+/* =========================
+   FUNIL
+========================= */
+
+const funnelStages = [
+  "Novo contato",
+  "Em atendimento",
+  "Interessado",
+  "Orçamento",
+  "Aguardando retorno",
+  "Cliente"
+];
+
+
+function renderKanban(){
+
+  const kanban =
+    document.getElementById("kanban");
+
+  kanban.innerHTML =
+    funnelStages.map(stage=>{
+
+      const list =
+        customers.filter(c=>c.status===stage);
+
+      return `
+
+        <div
+          class="kanban-column"
+          ondragover="allowDrop(event)"
+          ondrop="dropCustomer(event,'${stage}')"
+        >
+
+          <h4>
+            ${stage}
+            <span style="color:#999">
+              (${list.length})
+            </span>
+          </h4>
+
+          ${list.map(c=>`
+
+            <div
+              class="kanban-card"
+              draggable="true"
+              ondragstart="dragCustomer(event,${c.id})"
+              onclick="openChat(${c.id})"
+            >
+
+              <strong>
+                ${escapeHTML(c.name)}
+              </strong>
+
+              <p>
+                ${escapeHTML(c.phone)}
+              </p>
+
+              <p>
+                ${money(c.value)}
+              </p>
+
+            </div>
+
+          `).join("")}
+
+        </div>
+
+      `;
+    }).join("");
+}
+
+
+function dragCustomer(event,id){
+
+  event.dataTransfer.setData(
+    "customerId",
+    id
+  );
+}
+
+
+function allowDrop(event){
+
+  event.preventDefault();
+}
+
+
+function dropCustomer(event,status){
+
+  event.preventDefault();
+
+  const id =
+    Number(
+      event.dataTransfer.getData("customerId")
+    );
+
+  const c =
+    customers.find(x=>x.id===id);
+
+  if(!c) return;
+
+  c.status=status;
+
+  saveData();
+  renderAll();
+
+  showToast(`Cliente movido para "${status}".`);
+}
+
+
+/* =========================
+   RESPOSTAS
+========================= */
+
+function renderQuickReplies(){
+
+  const grid =
+    document.getElementById("quickGrid");
+
+  grid.innerHTML =
+    quickReplies.map(q=>`
+
+      <div class="quick-card">
+
+        <div class="quick-code">
+          ${escapeHTML(q.code)}
+        </div>
+
+        <h3>
+          ${escapeHTML(q.title)}
+        </h3>
+
+        <p>
+          ${escapeHTML(q.text)}
+        </p>
+
+        <div style="display:flex;gap:7px;margin-top:14px">
+
+          <button
+            class="btn btn-light btn-small"
+            onclick="useQuickReply('${q.code}')"
+          >
+            Usar
+          </button>
+
+          <button
+            class="btn btn-danger btn-small"
+            onclick="deleteQuickReply(${q.id})"
+          >
+            Excluir
+          </button>
+
+        </div>
+
+      </div>
+
+    `).join("");
+}
+
+
+function useQuickReply(code){
+
+  const q =
+    quickReplies.find(x=>x.code===code);
+
+  if(!q) return;
+
+  currentCustomerId =
+    customers[0]?.id || null;
+
+  showPageByName("whatsapp");
+
+  setTimeout(()=>{
+    document.getElementById("chatInput").value =
+      q.text;
+  },100);
+}
+
+
+function addQuickReply(){
+
+  const title =
+    prompt("Nome da resposta:");
+
+  if(!title) return;
+
+  const code =
+    prompt("Código. Exemplo: /saudacao:");
+
+  if(!code) return;
+
+  const text =
+    prompt("Texto da resposta:");
+
+  if(!text) return;
+
+
+  quickReplies.push({
+    id:Date.now(),
+    code,
+    title,
+    text
+  });
+
+  saveData();
+  renderQuickReplies();
+
+  showToast("Resposta criada.");
+}
+
+
+function deleteQuickReply(id){
+
+  quickReplies =
+    quickReplies.filter(x=>x.id!==id);
+
+  saveData();
+  renderQuickReplies();
+
+  showToast("Resposta excluída.");
+}
+
+
+/* =========================
+   PRODUTOS
+========================= */
+
+function renderProducts(){
+
+  const grid =
+    document.getElementById("productGrid");
+
+  grid.innerHTML =
+    products.map(p=>`
+
+      <div class="product">
+
+        <div class="product-img">
+          ${p.icon}
+        </div>
+
+        <div class="product-info">
+
+          <h3>
+            ${escapeHTML(p.name)}
+          </h3>
+
+          <p>
+            ${escapeHTML(p.description)}
+          </p>
+
+          <div class="price">
+            ${money(p.price)}
+          </div>
+
+          <div style="display:flex;gap:6px;margin-top:12px">
+
+            <button
+              class="btn btn-danger btn-small"
+              onclick="deleteProduct(${p.id})"
+            >
+              Excluir
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    `).join("");
+}
+
+
+function addProduct(){
+
+  const name =
+    prompt("Nome do produto/serviço:");
+
+  if(!name) return;
+
+  const description =
+    prompt("Descrição:");
+
+  const price =
+    Number(
+      prompt("Preço:", "0")
+    ) || 0;
+
+  const icon =
+    prompt("Emoji/ícone:", "📦");
+
+
+  products.push({
+    id:Date.now(),
+    name,
+    description,
+    price,
+    icon
+  });
+
+  saveData();
+  renderProducts();
+
+  showToast("Produto adicionado.");
+}
+
+
+function deleteProduct(id){
+
+  products =
+    products.filter(x=>x.id!==id);
+
+  saveData();
+  renderProducts();
+
+  showToast("Produto removido.");
+}
+
+
+/* =========================
+   CAMPANHAS
+========================= */
+
+function renderCampaigns(){
+
+  const list =
+    document.getElementById("campaignList");
+
+  list.innerHTML =
+    campaigns.map(c=>`
+
+      <div class="campaign">
+
+        <div>
+
+          <h3>
+            ${escapeHTML(c.name)}
+          </h3>
+
+          <p>
+            ${escapeHTML(c.description)}
+          </p>
+
+        </div>
+
+        <div style="display:flex;align-items:center;gap:10px">
+
+          <span class="badge ${
+            c.status==="Pronta"
+            ? "badge-green"
+            : "badge-yellow"
+          }">
+            ${c.status}
+          </span>
+
+          <button
+            class="btn btn-danger btn-small"
+            onclick="deleteCampaign(${c.id})"
+          >
+            Excluir
+          </button>
+
+        </div>
+
+      </div>
+
+    `).join("");
+}
+
+
+function addCampaign(){
+
+  const name =
+    prompt("Nome da campanha:");
+
+  if(!name) return;
+
+  const description =
+    prompt("Descrição da campanha:");
+
+  campaigns.push({
+    id:Date.now(),
+    name,
+    description:description || "",
+    status:"Rascunho"
+  });
+
+  saveData();
+  renderCampaigns();
+
+  showToast("Campanha criada.");
+}
+
+
+function deleteCampaign(id){
+
+  campaigns =
+    campaigns.filter(x=>x.id!==id);
+
+  saveData();
+  renderCampaigns();
+
+  showToast("Campanha excluída.");
+}
+
+
+/* =========================
+   CONFIGURAÇÕES
+========================= */
+
+function saveSettings(){
+
+  const settings = {
+
+    name:
+      document.getElementById("companyName").value,
+
+    phone:
+      document.getElementById("companyPhone").value,
+
+    category:
+      document.getElementById("companyCategory").value,
+
+    hours:
+      document.getElementById("companyHours").value,
+
+    greeting:
+      document.getElementById("companyGreeting").value
+  };
+
+
+  localStorage.setItem(
+    "cc_settings",
+    JSON.stringify(settings)
+  );
+
+  showToast("Configurações salvas.");
+}
+
+
+function loadSettings(){
+
+  const settings =
+    JSON.parse(
+      localStorage.getItem("cc_settings")
+    );
+
+  if(!settings) return;
+
+  document.getElementById("companyName").value =
+    settings.name || "";
+
+  document.getElementById("companyPhone").value =
+    settings.phone || "";
+
+  document.getElementById("companyCategory").value =
+    settings.category || "";
+
+  document.getElementById("companyHours").value =
+    settings.hours || "";
+
+  document.getElementById("companyGreeting").value =
+    settings.greeting || "";
+}
+
+
+/* =========================
+   BUSCA GLOBAL
+========================= */
+
+function globalSearch(){
+
+  const value =
+    document.getElementById("globalSearch")
+      .value
+      .trim();
+
+  if(!value) return;
+
+  showPageByName("clientes");
+
+  const input =
+    document.getElementById("customerSearch");
+
+  input.value=value;
+
+  renderCustomers();
+}
+
+
+/* =========================
+   ESCAPE HTML
+========================= */
+
+function escapeHTML(value){
+
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+
+/* =========================
+   RENDER GERAL
+========================= */
+
+function renderAll(){
+
+  renderDashboard();
+  renderCustomers();
+  renderChat();
+  renderFollowups();
+  renderKanban();
+  renderQuickReplies();
+  renderProducts();
+  renderCampaigns();
+}
+
+
+/* =========================
+   INICIALIZAÇÃO
+========================= */
+
+loadSettings();
+renderAll();
+
+</script>
+
+</body>
+</html>
